@@ -8,7 +8,7 @@ if [ ! -d "$REPO_PATH/.git" ]; then
   exit 1
 fi
 
-PRE_PULL_HOOK="$REPO_PATH/.git/hooks/pre-pull"
+PRE_PULL_HOOK="$REPO_PATH/.git/hooks/post-update"
 
 cat > $PRE_PULL_HOOK << EOF
 #!/bin/sh
