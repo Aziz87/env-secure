@@ -13,7 +13,7 @@ PRE_PULL_HOOK="$REPO_PATH/.git/hooks/pre-pull"
 cat > $PRE_PULL_HOOK << EOF
 #!/bin/sh
 
-sh ./env-encode.sh
+sh ./env-secure/env-encode.sh
 
 if [ \$? -ne 0 ]; then
   echo "error \$?"
@@ -27,4 +27,16 @@ echo "Pre-pull hook is set"
 
 PASSWORD=$(<~/.ssh/id_rsa)
 
-openssl enc -aes-256-cbc -a -A -d -md sha512 -pbkdf2 -iter 250000 -salt -in .env.prod.secure -out .env.prod -pass pass:"$PASSWORD"
+
+
+
+
+for file in $REPO_PATH/env-secure/files/.*.secure.txt; do
+    if [[ $file != *.secure ]]; then
+
+      tempPath="${file#$REPO_PATH/env-secure/files/}"
+      resultingFile="${tempPath%.secure.txt}"
+
+        openssl enc -aes-256-cbc -a -A -d -md sha512 -pbkdf2 -iter 250000 -salt -in "$file" -out "$resultingFile" -pass pass:"$PASSWORD"
+    fi
+done

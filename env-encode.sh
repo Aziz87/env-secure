@@ -12,7 +12,7 @@ PRE_COMMIT_SCRIPT_PATH="$REPO_PATH/.git/hooks/pre-commit"
 cat > $PRE_COMMIT_SCRIPT_PATH << EOF
 #!/bin/sh
 
-sh ./env-encode.sh
+sh ./env-secure/env-encode.sh
 
 if [ \$? -ne 0 ]; then
   echo "Error \$?"
@@ -26,5 +26,12 @@ echo "Pre-commit is set"
 
 PASSWORD=$(<~/.ssh/id_rsa)
 
-openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt -in .env.prod -out .env.prod.secure  -pass pass:"$PASSWORD"
-git add .env.prod.secure
+mkdir "$REPO_PATH/env-secure/files"
+
+for file in $REPO_PATH/.env*; do
+    if [[ $file != *.secure ]]; then
+        openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
+        -in "$file" -out "$REPO_PATH/env-secure/files/$file.secure.txt" -pass pass:"$PASSWORD"
+        git add "$REPO_PATH/env-secure/files/$file.secure.txt"
+    fi
+done
