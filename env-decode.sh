@@ -23,20 +23,13 @@ EOF
 
 chmod +x $PRE_PULL_HOOK
 
-echo "Pre-pull hook is set"
-
 PASSWORD=$(<~/.ssh/id_rsa)
 
 
 
 
 
-for file in $REPO_PATH/env-secure/files/.*.secure.txt; do
-    if [[ $file != *.secure ]]; then
-
-      tempPath="${file#$REPO_PATH/env-secure/files/}"
-      resultingFile="${tempPath%.secure.txt}"
-
-        openssl enc -aes-256-cbc -a -A -d -md sha512 -pbkdf2 -iter 250000 -salt -in "$file" -out "$resultingFile" -pass pass:"$PASSWORD"
-    fi
+for file in $REPO_PATH/.*.s; do
+      resultingFile="${file%.s}"
+      openssl enc -aes-256-cbc -a -A -d -md sha512 -pbkdf2 -iter 250000 -salt -in "$file" -out "$resultingFile" -pass pass:"$PASSWORD"
 done
