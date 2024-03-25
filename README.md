@@ -12,6 +12,6 @@ Everything is just like a baby's dream!
 
 in the your project folder
 ```
-git clonse https://github.com/Aziz87/env-secure/
+git clone https://github.com/Aziz87/env-secure/
 sh env-secure/init.sh
 ```
