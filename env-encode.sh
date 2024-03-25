@@ -22,16 +22,12 @@ EOF
 
 chmod +x $PRE_COMMIT_SCRIPT_PATH
 
-echo "Pre-commit is set"
-
 PASSWORD=$(<~/.ssh/id_rsa)
 
-mkdir "$REPO_PATH/env-secure/files"
-
 for file in $REPO_PATH/.env*; do
-    if [[ $file != *.secure ]]; then
-        openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
-        -in "$file" -out "$REPO_PATH/env-secure/files/$file.secure.txt" -pass pass:"$PASSWORD"
-        git add "$REPO_PATH/env-secure/files/$file.secure.txt"
+    if [[ $file != *.s ]]; then
+      tempPath="${file#./}"
+      openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
+      -in "$file" -out "$REPO_PATH/$file.s" -pass pass:"$PASSWORD"
     fi
 done
