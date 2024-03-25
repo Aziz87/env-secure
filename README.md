@@ -15,3 +15,26 @@ in the your project folder
 git clone https://github.com/Aziz87/env-secure/
 sh env-secure/init.sh
 ```
+
+
+
+# USAGE
+
+Just try make commits and pulls as you used to...
+
+```
+git commit -m "new commit with encoded env files"
+git pull // load encoded env files and decode with your ~/.ssh/id_rsa key 
+```
+
+# REMINDER
+
+Don't forget to add your secrets to .gitignore
+file: .gitignore
+```
+.env
+.env.prod
+.env.local
+.env.special
+....
+```
