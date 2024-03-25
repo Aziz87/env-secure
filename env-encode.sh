@@ -29,5 +29,6 @@ for file in $REPO_PATH/.env*; do
       tempPath="${file#./}"
       openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
       -in "$file" -out "$REPO_PATH/$file.s" -pass pass:"$PASSWORD"
+      git add "$REPO_PATH/$file.s";
     fi
 done
