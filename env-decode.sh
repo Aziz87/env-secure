@@ -25,9 +25,10 @@ chmod +x $PRE_PULL_HOOK
 
 PASSWORD=$(<~/.ssh/id_rsa)
 
-if [ -e "$REPO_PATH/.*.s" ]; then
-  for file in $REPO_PATH/.*.s; do
-        resultingFile="${file%.s}"
-        openssl enc -aes-256-cbc -a -A -d -md sha512 -pbkdf2 -iter 250000 -salt -in "$file" -out "$resultingFile" -pass pass:"$PASSWORD"
-  done
-fi
+
+for file in $REPO_PATH/.*.s; do
+  if [[ -e "$file" ]]; then
+      resultingFile="${file%.s}"
+      openssl enc -aes-256-cbc -a -A -d -md sha512 -pbkdf2 -iter 250000 -salt -in "$file" -out "$resultingFile" -pass pass:"$PASSWORD"
+  fi   
+done

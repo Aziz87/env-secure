@@ -4,5 +4,7 @@ get_current_directory() {
 }
 CWD=$(get_current_directory)
 echo $CWD;
+
+sh "$CWD/env-decode.sh";
 sh "$CWD/env-encode.sh";
 sh "$CWD/env-decode.sh";
