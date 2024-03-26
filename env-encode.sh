@@ -24,11 +24,29 @@ chmod +x $PRE_COMMIT_SCRIPT_PATH
 
 PASSWORD=$(<~/.ssh/id_rsa)
 
-for file in $REPO_PATH/.env*; do
-    if [[ $file != *.s ]]; then
-      tempPath="${file#./}"
-      openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
-      -in "$file" -out "$REPO_PATH/$file.s" -pass pass:"$PASSWORD"
-      git add "$REPO_PATH/$file.s";
-    fi
-done
+
+if [ -e "$REPO_PATH/.env*" ]; then
+  for file in $REPO_PATH/.env*; do
+      if [[ $file != *.s ]]; then
+        tempPath="${file#./}"
+        openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
+        -in "$file" -out "$REPO_PATH/$file.s" -pass pass:"$PASSWORD"
+        git add "$REPO_PATH/$file.s";
+      fi
+  done
+fi
+
+
+if [ -e "$REPO_PATH/secret*" ]; then
+  for file in $REPO_PATH/secret*; do
+      if [[ $file != *.s ]]; then
+        tempPath="${file#./}"
+        openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
+        -in "$file" -out "$REPO_PATH/$file.s" -pass pass:"$PASSWORD"
+        git add "$REPO_PATH/$file.s";
+      fi
+  done
+fi;
+
+
+
