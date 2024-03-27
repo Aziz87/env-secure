@@ -36,8 +36,8 @@ for file in $REPO_PATH/.env*; do
 done
 
 
-if [ -e "$REPO_PATH/secret*" ]; then
-  for file in $REPO_PATH/secret*; do
+if [ -e "$REPO_PATH/*secret*" ]; then
+  for file in $REPO_PATH/*secret*; do
       if [[ $file != *.s ]]; then
         tempPath="${file#./}"
         openssl enc -aes-256-cbc -a -A -md sha512 -pbkdf2 -iter 250000 -salt \
