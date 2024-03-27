@@ -36,7 +36,7 @@ for file in $REPO_PATH/.env*; do
 done
 
 
-if [ -e "$REPO_PATH/*secret*" ]; then
+
   for file in $REPO_PATH/*secret*; do
       if [[ $file != *.s ]]; then
         tempPath="${file#./}"
@@ -45,7 +45,7 @@ if [ -e "$REPO_PATH/*secret*" ]; then
         git add "$REPO_PATH/$file.s";
       fi
   done
-fi;
+
 
 
 
