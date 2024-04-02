@@ -8,9 +8,9 @@ if [ ! -d "$REPO_PATH/.git" ]; then
   exit 1
 fi
 
-PRE_PULL_HOOK="$REPO_PATH/.git/hooks/post-update"
+POST_PULL_HOOK="$REPO_PATH/.git/hooks/post-merge"
 
-cat > $PRE_PULL_HOOK << EOF
+cat > $POST_PULL_HOOK << EOF
 #!/bin/sh
 
 sh ./env-secure/env-encode.sh
@@ -21,7 +21,7 @@ if [ \$? -ne 0 ]; then
 fi
 EOF
 
-chmod +x $PRE_PULL_HOOK
+chmod +x $POST_PULL_HOOK
 
 PASSWORD=$(<~/.ssh/id_rsa)
 
